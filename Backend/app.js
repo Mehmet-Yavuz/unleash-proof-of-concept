@@ -10,8 +10,11 @@ const corsOptions = {
   origin: "http://localhost:3000",
 };
 app.use("*", cors(corsOptions));
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
 
 axios.defaults.headers.common["Authorization"] = SECRET;
+const featureName = "themeValue";
 
 async function axiosAsyncCallFeatures(url, featureName) {
   const axiosGet = await axios.get(url);
@@ -19,10 +22,25 @@ async function axiosAsyncCallFeatures(url, featureName) {
   return featureData;
 }
 
+async function axiosAsyncUpdateFeature(url, body) {
+  const axiosGet = await axios.put(url, body);
+  return axiosGet.data.data[featureName];
+}
+
 app.get("/theme-value", (req, res) => {
   let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad/latest";
-  let featureName = "themeValue";
   axiosAsyncCallFeatures(url, featureName)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((error) => {
+      res.json(error);
+    });
+});
+
+app.put("/edit-theme-value", (req, res) => {
+  let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad";
+  axiosAsyncUpdateFeature(url, req.body)
     .then((data) => {
       res.json(data);
     })
