@@ -7,7 +7,7 @@ const SECRET = process.env.SECRET;
 const axios = require("axios").default;
 const cors = require("cors");
 const corsOptions = {
-  origin: "http://localhost:3006",
+  origin: "http://localhost:3000",
 };
 app.use("*", cors(corsOptions));
 
@@ -19,9 +19,9 @@ async function axiosAsyncCallFeatures(url, featureName) {
   return featureData;
 }
 
-app.get("/api", (req, res) => {
-  let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad";
-  let featureName = "newValue";
+app.get("/theme-value", (req, res) => {
+  let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad/latest";
+  let featureName = "themeValue";
   axiosAsyncCallFeatures(url, featureName)
     .then((data) => {
       res.json(data);
