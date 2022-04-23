@@ -15,9 +15,8 @@ axios.defaults.headers.common["Authorization"] = SECRET;
 
 async function axiosAsyncCallFeatures(url, featureName) {
   const axiosGet = await axios.get(url);
-  console.log(axiosGet);
   const featureData = axiosGet.data[featureName];
-  return featureData.featureName;
+  return featureData;
 }
 
 app.get("/api", (req, res) => {
