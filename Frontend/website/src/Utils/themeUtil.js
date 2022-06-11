@@ -12,7 +12,7 @@ export const editTheme = async (value) => {
     },
     body: JSON.stringify({
       themeValue: value["themeValue"],
-      themeRegions: value["themeRegions"],
+      themeBrowsers: value["themeBrowsers"],
     }),
   };
 

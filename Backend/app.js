@@ -17,6 +17,8 @@ axios.defaults.headers.common["Authorization"] = SECRET;
 
 const DeviceDetector = require("device-detector-js");
 
+// Functions
+
 async function axiosAsyncCallFeatures(url) {
   const axiosGet = await axios.get(url);
   const featureData = axiosGet.data;
@@ -28,6 +30,15 @@ async function axiosAsyncUpdateFeature(url, body) {
   return axiosGet.data.data;
 }
 
+function jsonConcat(o1, o2) {
+  for (var key in o2) {
+    o1[key] = o2[key];
+  }
+  return o1;
+}
+
+// Functions
+
 app.get("/theme", (req, res) => {
   let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad/latest";
 
@@ -35,20 +46,7 @@ app.get("/theme", (req, res) => {
   const deviceDetector = new DeviceDetector();
   const device = deviceDetector.parse(ua);
   $ = {};
-  switch (device.client.name) {
-    case "Chrome":
-      $.userRegion = "Region A";
-      break;
-    case "Firefox":
-      $.userRegion = "Region B";
-      break;
-    case "Microsoft Edge":
-      $.userRegion = "Region C";
-      break;
-    default:
-      $.userRegion = "Unknown";
-      break;
-  }
+  $.userBrowser = device.client.name;
 
   axiosAsyncCallFeatures(url)
     .then((data) => {
@@ -59,13 +57,6 @@ app.get("/theme", (req, res) => {
       res.json(error);
     });
 });
-
-function jsonConcat(o1, o2) {
-  for (var key in o2) {
-    o1[key] = o2[key];
-  }
-  return o1;
-}
 
 app.put("/edit-theme", (req, res) => {
   let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad";
