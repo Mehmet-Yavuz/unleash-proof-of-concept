@@ -4,17 +4,32 @@ import { getTheme, editTheme } from "./Utils/themeUtil";
 
 function App() {
   const [theme, setTheme] = useState(undefined);
+  const [regions, setRegions] = useState([]);
 
   const handleEdit = (evt) => {
     evt.preventDefault();
-    editTheme(!theme).then((data) => {
+    const data = { themeValue: !theme, themeRegions: regions };
+    editTheme(data).then((data) => {
       setTheme(data);
     });
   };
 
+  const handleRegion = (value) => {
+    if (regions.includes(value)) {
+      regions.pop(value);
+    } else {
+      regions.push(value);
+    }
+  };
+
   useEffect(() => {
     getTheme().then((value) => {
-      setTheme(value);
+      setTheme(value.themeValue);
+      for (const region of value.themeRegions) {
+        document.getElementById(region).checked = true;
+      }
+      setRegions(value.themeRegions);
+      console.log(regions);
     });
   }, []);
 
@@ -34,6 +49,43 @@ function App() {
                   handleEdit(e);
                 }}
               />
+              <form onSubmit={handleEdit}>
+                <fieldset>
+                  <legend>Region</legend>
+                  <input
+                    type="checkbox"
+                    id="Region A"
+                    name="region"
+                    value="Region A"
+                    onChange={(e) => {
+                      handleRegion(e.target.value);
+                    }}
+                  />
+                  Region A<br />
+                  <input
+                    type="checkbox"
+                    id="Region B"
+                    name="region"
+                    value="Region B"
+                    onChange={(e) => {
+                      handleRegion(e.target.value);
+                    }}
+                  />
+                  Region B<br />
+                  <input
+                    type="checkbox"
+                    id="Region C"
+                    name="region"
+                    value="Region C"
+                    onChange={(e) => {
+                      handleRegion(e.target.value);
+                    }}
+                  />
+                  Region C<br />
+                  <br />
+                  <input type="submit" value="Submit for these regions" />
+                </fieldset>
+              </form>
             </header>
           );
         } else {
@@ -50,6 +102,43 @@ function App() {
                   handleEdit(e);
                 }}
               />
+              <form onSubmit={handleEdit}>
+                <fieldset>
+                  <legend>Region</legend>
+                  <input
+                    type="checkbox"
+                    id="Region A"
+                    name="region"
+                    value="Region A"
+                    onChange={(e) => {
+                      handleRegion(e.target.value);
+                    }}
+                  />
+                  Region A<br />
+                  <input
+                    type="checkbox"
+                    id="Region B"
+                    name="region"
+                    value="Region B"
+                    onChange={(e) => {
+                      handleRegion(e.target.value);
+                    }}
+                  />
+                  Region B<br />
+                  <input
+                    type="checkbox"
+                    id="Region C"
+                    name="region"
+                    value="Region C"
+                    onChange={(e) => {
+                      handleRegion(e.target.value);
+                    }}
+                  />
+                  Region C<br />
+                  <br />
+                  <input type="submit" value="Submit for these regions" />
+                </fieldset>
+              </form>
             </header>
           );
         }

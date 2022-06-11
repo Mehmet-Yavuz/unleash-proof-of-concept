@@ -14,22 +14,21 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
 axios.defaults.headers.common["Authorization"] = SECRET;
-const featureName = "themeValue";
 
-async function axiosAsyncCallFeatures(url, featureName) {
+async function axiosAsyncCallFeatures(url) {
   const axiosGet = await axios.get(url);
-  const featureData = axiosGet.data[featureName];
+  const featureData = axiosGet.data;
   return featureData;
 }
 
 async function axiosAsyncUpdateFeature(url, body) {
   const axiosGet = await axios.put(url, body);
-  return axiosGet.data.data[featureName];
+  return axiosGet.data.data;
 }
 
-app.get("/theme-value", (req, res) => {
+app.get("/theme", (req, res) => {
   let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad/latest";
-  axiosAsyncCallFeatures(url, featureName)
+  axiosAsyncCallFeatures(url)
     .then((data) => {
       res.json(data);
     })
@@ -38,7 +37,7 @@ app.get("/theme-value", (req, res) => {
     });
 });
 
-app.put("/edit-theme-value", (req, res) => {
+app.put("/edit-theme", (req, res) => {
   let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad";
   axiosAsyncUpdateFeature(url, req.body)
     .then((data) => {
