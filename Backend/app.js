@@ -60,8 +60,16 @@ app.get("/theme", (req, res) => {
 
 app.put("/edit-theme", (req, res) => {
   let url = "https://api.jsonbin.io/b/6245bff11a1b610f0848afad";
+
+  const ua = req.headers["user-agent"];
+  const deviceDetector = new DeviceDetector();
+  const device = deviceDetector.parse(ua);
+  $ = {};
+  $.userBrowser = device.client.name;
+
   axiosAsyncUpdateFeature(url, req.body)
     .then((data) => {
+      data = jsonConcat(data, $);
       res.json(data);
     })
     .catch((error) => {
