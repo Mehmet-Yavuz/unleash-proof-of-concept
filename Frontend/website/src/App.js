@@ -24,12 +24,17 @@ function App() {
 
   useEffect(() => {
     getTheme().then((value) => {
-      setTheme(value.themeValue);
-      for (const region of value.themeRegions) {
-        document.getElementById(region).checked = true;
+      if (value.themeRegions.includes(value.userRegion)) {
+        setTheme(value.themeValue);
+        for (const region of value.themeRegions) {
+          document.getElementById(region).checked = true;
+        }
+        setRegions(value.themeRegions);
+      } else {
+        setTheme(!value.themeValue);
+        document.getElementById(value.userRegion).checked = true;
+        setRegions([value.userRegion]);
       }
-      setRegions(value.themeRegions);
-      console.log(regions);
     });
   }, []);
 
